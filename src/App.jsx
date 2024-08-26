@@ -4,7 +4,6 @@ import AppRoutes from './routes/AppRoutes';
 
 // components
 
-
 function App() {
   return <AppRoutes />;
 }

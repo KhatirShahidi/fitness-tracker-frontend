@@ -31,9 +31,9 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label>Email: </label>
           <input
