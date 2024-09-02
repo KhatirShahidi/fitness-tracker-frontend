@@ -1,40 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import CreateExercise from "./CreateExercise";
+import CreateWorkout from "./CreateWorkout";
+import GetWorkout from "./GetWorkout";
+import SideNav from "../components/sideBar";
 
 function Dashboard() {
-  const [workouts, setWorkouts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [workouts, setWorkouts] = useState([]); // State to store workouts
 
-  useEffect(() => {
-    // Fetch workout data from the backend
-    async function fetchWorkouts() {
-      const response = await fetch("/api/workouts", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const data = await response.json();
-      setWorkouts(data);
-    }
-
-    fetchWorkouts();
-  }, []);
+  // Fetch workouts
   
-  const navigate = useNavigate();
-  function navigateToHome() {
-    navigate("/");
-  }
 
   return (
-    <div>
-      <h2>Your Workout Dashboard</h2>
-      <button onClick={navigateToHome}>Home</button>
-      <ul>
-        {workouts.map((workout) => (
-          <li key={workout.log_id}>
-            {workout.exercise_name} - {workout.sets} sets, {workout.reps} reps
-          </li>
-        ))}
-      </ul>
+    <div className="flex">
+      <SideNav />
+      <main className="flex-1 p-4 ml-16 transition-margin-left duration-300 ease-in-out">
+        <div className="dashboard-container">
+          <h1 className="text-2xl font-bold">Welcome to the Dashboard</h1>
+          <h2>Step 1</h2>
+          <CreateExercise />
+          <h2>Step 2</h2>
+          <CreateWorkout />
+          <GetWorkout />
+        </div>
+      </main>
     </div>
   );
 }

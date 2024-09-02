@@ -1,84 +1,134 @@
-import { useState } from "react";
-import { useLogout } from "../hooks/useLogout";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  FaHome,
+  FaDumbbell,
+  FaPlus,
+  FaList,
+  FaSignOutAlt,
+} from "react-icons/fa"; // Example icons
+import { useNavigate } from "react-router-dom"; // Correct import
 
-// images
-import logo from "../assets/images/logo.png";
-import defaultProfile from "../assets/images/defaultProfile.png";
+function SideNav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate(); // Correct usage of useNavigate
 
-// icons
-import { IoMdLogOut } from "react-icons/io";
-
-// components
-import Toast from "./Toast";
-import SidebarIcons from "./SidebarIcons";
-
-const Sidebar = () => {
-  const [toastNotification, setToastNotification] = useState(null);
-  const { user } = useAuthContext();
-  const { logout } = useLogout();
-  const navigate = useNavigate();
-
-  const toggleToastNotification = () => {
-    setToastNotification(true);
-
-    setTimeout(() => {
-      setToastNotification(null);
-    }, 5000);
-  };
-
-  if (!user) {
-    return null;
+  function navigateToLogin() {
+    navigate("/login");
   }
 
+  function navigateToExercises() {
+    navigate("/exercises");
+  }
+
+  function navigateToWorkouts() {
+    navigate("/workouts");
+  }
+
+  function navigateToDashboard() {
+    navigate("/dashboard");
+  }
+
+  function navigateToAddExercises() {
+    navigate("/exercises");
+  }
+
+  // Toggle sidebar visibility
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <nav className="fixed bottom-0 flex w-full justify-center gap-6 bg-primaryDark xsm:gap-16 xmd:min-h-screen xmd:w-24 xmd:flex-col xmd:justify-between">
-      {toastNotification && (
-        <Toast
-          toastNotification={toastNotification}
-          setToastNotification={setToastNotification}
-          bgColor={"bg-primaryOrange"}
-          textColor={"text-white"}
-          elementType={"Icon"}
-        />
-      )}
-
-      <section className="flex items-center justify-center xmd:flex-col xmd:items-stretch">
-        <div className="h-22 hidden flex-col items-center justify-center space-y-4 pt-5 xmd:flex">
-          <img src={logo} alt="app logo" className="h-12 w-12" />
-
-          <div className=" h-[1px] w-[70%] bg-zinc-600" />
-        </div>{" "}
-        <SidebarIcons
-          user={user}
-          toggleToastNotification={toggleToastNotification}
-        />
-      </section>
-
-      <footer className="2xsm:gap-11 flex items-center justify-center gap-6 xsm:gap-16 sm:gap-20 xmd:flex-col xmd:gap-14">
-        <div className="sidebarIconsContainer">
-          <IoMdLogOut className="sidebarIcon" onClick={logout} />
-        </div>
-
-        <div className="flex items-center justify-center xmd:flex-col xmd:space-y-6 xmd:pb-5 ">
-          <div className=" hidden h-[1.5px] w-12 bg-zinc-600 xmd:block " />
-          {user && (
-            <div
-              className="h-8 w-8 cursor-pointer xmd:h-12 xmd:w-12"
-              onClick={() => navigate("/profile/64e5f514be01e5666f6e75de")}
+    <div className="flex">
+      {/* Sidebar */}
+      <div
+        id="default-sidebar"
+        className={`${
+          isOpen ? "w-64" : "w-16"
+        } h-screen bg-gray-200 transition-width duration-300 ease-in-out`}
+      >
+        {/* Sidebar content */}
+        <ul>
+          <li>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateToDashboard();
+              }}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <img
-                src={user.profileImg.url ? user.profileImg.url : defaultProfile}
-                alt="user image"
-                className="h-full w-full rounded-full"
-              />
-            </div>
-          )}
-        </div>
-      </footer>
-    </nav>
-  );
-};
+              <FaHome className="w-6 h-6" />
+              <span className="ml-3">Home</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateToWorkouts();
+              }}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <FaDumbbell className="w-6 h-6" />
+              <span className="ml-3">Workouts</span>
+            </a>
+          </li>
 
-export default Sidebar;
+          <li>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateToExercises();
+              }}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <FaList className="w-6 h-6" />
+              <span className="ml-3">Exercises</span>
+            </a>
+          </li>
+
+          {/* Add more sidebar items here */}
+
+          <li>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                navigateToAddExercises();
+              }}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <FaPlus className="w-6 h-6" />
+              <span className="ml-3">
+                Add
+              </span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="#"
+              onClick={ (e) => {
+                e.preventDefault();
+                navigateToLogin();
+              }}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <FaSignOutAlt className="w-6 h-6" />
+              <span  className="ml-3">
+                Logout
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      {/* Toggle Button */}
+
+      {/* Main Content */}
+    </div>
+  );
+}
+
+export default SideNav;

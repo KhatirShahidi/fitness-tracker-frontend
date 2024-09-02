@@ -1,62 +1,78 @@
 import React, { useState } from "react";
-import Register from "./Register";
 import { useForm } from "react-hook-form";
-// const handleSubmit = async (event) => {
-//   event.preventDefault();
-//   try {
-//     const response = await fetch("/api/auth/login", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ email, password }),
-//     });
-
-//     const data = await response.json();
-//     if (response.ok) {
-//       localStorage.setItem("token", data.token);
-//       window.location.href = "/dashboard";
-//     } else {
-//       alert("Login failed: " + data.message);
-//     }
-//   } catch (error) {
-//     console.error("Error logging in:", error);
-//   }
-// };
+import { postApi } from "../utils/api";
+import Cookies from "js-cookie";
+import { useNavigate, Link } from "react-router-dom";
 
 function Login() {
-  const {handleSubmit, login, formState: { errors }} = useForm();
-  function onSubmit(values) {
-    console.log(values);
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const navigate = useNavigate();
+
+  function navigateToDashboard() {
+    navigate("/dashboard");
+  }
+
+  async function loginApi(data) {
+    try {
+      const res = await postApi("http://localhost:5000/login", data);
+      
+      if (res.status !== 200) {  // Checking the status from Axios response
+        throw new Error(res.statusText);
+      }
+      
+      const resData = res.data;  // Axios already parses JSON
+      const token = resData.data.token;
+      console.log(resData);
+
+      alert("Login Successful");
+      
+      // Save token in cookie
+      Cookies.set("authToken", token);
+      navigateToDashboard();
+      reset();
+    } catch (error) {
+      console.error("Login Error:", error.response ? error.response.data : error.message);
+      alert("Login Failed. Please check your credentials.");
+    }
+  }
+
+  function onSubmit(data) {
+    loginApi(data);
   }
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <label>Email: </label>
           <input
-          {...Register("email", { required: "Enter email" })}
+            {...register("email", { required: "Enter email" })}
             type="email"
             required
           />
-
           {errors.email && <p>{errors.email.message}</p>}
         </div>
         <div>
           <label>Password: </label>
           <input
-          {...Register("password", { required: "Enter password" })}
+            {...register("password", { required: "Enter password" })}
             type="password"
             required
           />
-
           {errors.password && <p>{errors.password.message}</p>}
         </div>
-        <button type="submit">
-          Register
-        </button>
+        <button type="submit">Login</button>
+        <p>
+          Don't have an account? Click{" "}
+          <Link to="/register">here</Link> to Register
+        </p>
       </form>
     </div>
   );
