@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 
 const CreateWorkout = () => {
   const [exerciseName, setExerciseName] = useState("");
-  const [exerciseId, setExerciseId] = useState("");
   const [sets, setSets] = useState("");
   const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
@@ -51,7 +50,6 @@ const CreateWorkout = () => {
 
   const handleSelectExercise = (selectedExercise) => {
     setExerciseName(selectedExercise.exercise_name);
-    setExerciseId(selectedExercise.exercise_id); // Store the ID for submission
     setFilteredExercises([]); // Clear suggestions after selection
   };
 
@@ -60,7 +58,7 @@ const CreateWorkout = () => {
     const repsNum = parseInt(reps);
     const weightNum = parseFloat(weight);
     if (
-      !exerciseId ||
+      !exerciseName ||
       isNaN(setsNum) ||
       setsNum <= 0 ||
       isNaN(repsNum) ||
@@ -88,7 +86,7 @@ const CreateWorkout = () => {
     setLoading(true);
     try {
       const workoutData = {
-        exercise_id: exerciseId, // Using exercise ID for backend submission
+        exercise_name: exerciseName, // Using exercise name for backend submission
         sets: parseInt(sets),
         reps: parseInt(reps),
         weight: parseFloat(weight),
@@ -117,7 +115,6 @@ const CreateWorkout = () => {
 
   const resetForm = () => {
     setExerciseName("");
-    setExerciseId("");
     setSets("");
     setReps("");
     setWeight("");

@@ -3,29 +3,56 @@ import CreateExercise from "./CreateExercise";
 import CreateWorkout from "./CreateWorkout";
 import GetWorkout from "./GetWorkout";
 import SideNav from "../components/sideBar";
+import { getApiWithToken } from "../utils/api";
+import Cookies from "js-cookie";
+
 
 function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
-  const [workouts, setWorkouts] = useState([]); // State to store workouts
+  const [username, setUsername] = useState(""); // State to store the username
 
-  // Fetch workouts
+    useEffect(() => {
+    async function getUser() {
+    try {
+      const token = Cookies.get("authToken");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+
+      const { data } = await getApiWithToken("http://localhost:5000/me", token);
+
+      setUsername(data.user.username);
+    } catch (error) {
+      console.error("Failed to fetch user:", error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  getUser();
+}, []);
   
 
   return (
     <div className="flex">
       <SideNav />
-      <main className="flex-1 p-4 ml-16 transition-margin-left duration-300 ease-in-out">
-        <div className="dashboard-container">
-          <h1 className="text-2xl font-bold">Welcome to the Dashboard</h1>
-          <h2>Step 1</h2>
-          <CreateExercise />
-          <h2>Step 2</h2>
-          <CreateWorkout />
-          <GetWorkout />
-        </div>
-      </main>
+      <div className="dashboard-container">
+        <h1 className="text-2xl font-bold">
+          Welcome {username}, to My Fitness Tracker
+          <br />
+          <br />
+          Please follow the steps below to get started:
+        </h1>
+        <h2>Step 1: </h2>
+        <CreateExercise />
+        <h2>Step 2: </h2>
+        <CreateWorkout />
+        <h2>Step 3: Start Monitoring! </h2>
+        <GetWorkout />
+      </div>
     </div>
   );
 }
+
 
 export default Dashboard;

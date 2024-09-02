@@ -3,14 +3,16 @@ import {
   FaHome,
   FaDumbbell,
   FaPlus,
+  FaPlusCircle,
   FaList,
   FaSignOutAlt,
-} from "react-icons/fa"; // Example icons
-import { useNavigate } from "react-router-dom"; // Correct import
+} from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function SideNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate(); // Correct usage of useNavigate
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  const navigate = useNavigate();
 
   function navigateToLogin() {
     navigate("/login");
@@ -29,12 +31,19 @@ function SideNav() {
   }
 
   function navigateToAddExercises() {
-    navigate("/exercises");
+    navigate("/createexercise");
   }
 
-  // Toggle sidebar visibility
+  function navigateToAddWorkout() {
+    navigate("/createworkout");
+  }
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -44,7 +53,7 @@ function SideNav() {
         id="default-sidebar"
         className={`${
           isOpen ? "w-64" : "w-16"
-        } h-screen bg-gray-200 transition-width duration-300 ease-in-out`}
+        } h-screen bg-gray-200 transition-width duration-300 ease-in-out flex-shrink-0`} 
       >
         {/* Sidebar content */}
         <ul>
@@ -58,7 +67,7 @@ function SideNav() {
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <FaHome className="w-6 h-6" />
-              <span className="ml-3">Home</span>
+              <span className="ml-3">Dashboard</span>
             </a>
           </li>
           <li>
@@ -71,7 +80,7 @@ function SideNav() {
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <FaDumbbell className="w-6 h-6" />
-              <span className="ml-3">Workouts</span>
+              <span className="ml-3">My Workouts</span>
             </a>
           </li>
 
@@ -85,47 +94,71 @@ function SideNav() {
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <FaList className="w-6 h-6" />
-              <span className="ml-3">Exercises</span>
+              <span className="ml-3">Exercise Library</span>
             </a>
           </li>
 
-          {/* Add more sidebar items here */}
+          {/* Add Dropdown */}
+          <li>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleDropdown();
+              }}
+              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white"
+            >
+              <FaPlusCircle className="w-6 h-6" />
+              <span className="ml-3">Add</span>
+            </a>
+            {isDropdownOpen && (
+              <ul className="pl-6">
+                <li>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToAddExercises();
+                    }}
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <FaPlus className="w-6 h-6" />
+                    <span className="ml-3">New Exercise</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateToAddWorkout();
+                    }}
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <FaPlus className="w-6 h-6" />
+                    <span className="ml-3">New Workout</span>
+                  </a>
+                </li>
+              </ul>
+            )}
+          </li>
 
           <li>
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                navigateToAddExercises();
-              }}
-              className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <FaPlus className="w-6 h-6" />
-              <span className="ml-3">
-                Add
-              </span>
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              onClick={ (e) => {
-                e.preventDefault();
                 navigateToLogin();
               }}
               className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <FaSignOutAlt className="w-6 h-6" />
-              <span  className="ml-3">
-                Logout
-              </span>
+              <span className="ml-3">Logout</span>
             </a>
           </li>
         </ul>
       </div>
-      {/* Toggle Button */}
-
+      
       {/* Main Content */}
     </div>
   );

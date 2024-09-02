@@ -70,46 +70,27 @@ function GetWorkout() {
       if (!token) {
         throw new Error("Token not found");
       }
-
-      console.log("Updated workout data to send:", updatedWorkoutData); // Log the data being sent
-
-      // Use PUT instead of POST for editing
+  
       const response = await putApiWithToken(
         `http://localhost:5000/workouts/${currentWorkout.log_id}`,
         updatedWorkoutData,
         token
       );
-
-      console.log("Response from server:", response); // Log the response from the server
-
+  
       if (response.status === 200) {
         console.log("Workout edited successfully");
-        setWorkouts(
-          workouts.map((workout) =>
-            workout.log_id === currentWorkout.log_id
-              ? { ...workout, ...updatedWorkoutData }
-              : workout
-          )
-        ); // Update state locally
-        closeEditModal(); // Close modal after saving
+        await getWorkouts(); // Refresh the workouts list
+        closeEditModal();
       } else {
-        console.error("Failed to edit workout: ", response.data); // Log the response data if status is not 200
+        console.error("Failed to edit workout: ", response.data);
       }
     } catch (error) {
-      console.error("Error editing workout:", error); // Log the entire error object
-      if (error.response) {
-        console.log("Error response data:", error.response.data); // Log the error response data
-        console.log("Error response status:", error.response.status); // Log the error response status
-        console.log("Error response headers:", error.response.headers); // Log the error response headers
-      } else if (error.request) {
-        console.log("Error request:", error.request); // Log the request that caused the error
-      } else {
-        console.log("Error message:", error.message); // Log a generic error message
-      }
+      console.error("Error editing workout:", error);
     } finally {
       setIsLoading(false);
     }
   }
+  
 
   // Delete a workout
   async function deleteWorkout(log_id) {
@@ -119,12 +100,12 @@ function GetWorkout() {
       if (!token) {
         throw new Error("Token not found");
       }
-
+  
       const response = await deleteApiWithToken(`http://localhost:5000/workouts/${log_id}`, token);
-
+  
       if (response.status === 200) {
         console.log("Workout deleted successfully");
-        setWorkouts(workouts.filter((workout) => workout.log_id !== log_id)); // Update state locally
+        await getWorkouts(); // Refresh the workouts list
       } else {
         console.error("Failed to delete workout");
       }
@@ -134,6 +115,7 @@ function GetWorkout() {
       setIsLoading(false);
     }
   }
+  
 
   useEffect(() => {
     getWorkouts();
