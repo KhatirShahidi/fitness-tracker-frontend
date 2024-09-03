@@ -42,7 +42,7 @@ function Register() {
   }
 
   return (
-    <main>
+    <div>
       <h2>Register</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -86,7 +86,7 @@ function Register() {
           <Link to="/login">Already a user?</Link>
         </p>
       </form>
-    </main>
+      </div>
   );
 }
 

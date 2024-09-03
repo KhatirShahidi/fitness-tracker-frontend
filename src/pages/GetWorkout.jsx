@@ -5,17 +5,16 @@ import SideNav from "../components/sideBar";
 
 function GetWorkout() {
   const [isLoading, setIsLoading] = useState(true);
-  const [workouts, setWorkouts] = useState([]); // State to store workouts
-  const [showEditModal, setShowEditModal] = useState(false); // State to manage modal visibility
-  const [currentWorkout, setCurrentWorkout] = useState(null); // State to store current workout to be edited
+  const [workouts, setWorkouts] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [currentWorkout, setCurrentWorkout] = useState(null);
   const [updatedWorkoutData, setUpdatedWorkoutData] = useState({
     exercise_id: "",
     sets: "",
     reps: "",
     weight: "",
-  }); // State to store form data for editing
+  });
 
-  // Fetch workouts
   async function getWorkouts() {
     try {
       setIsLoading(true);
@@ -24,10 +23,10 @@ function GetWorkout() {
         throw new Error("Token not found");
       }
 
-      const { data } = await getApiWithToken("http://localhost:5000/workouts", token); // Destructure 'data' from response
+      const { data } = await getApiWithToken("http://localhost:5000/workouts", token);
       console.log("Fetched Workouts:", data);
 
-      setWorkouts(data.workouts); // Set workouts state with the fetched data
+      setWorkouts(data.workouts);
     } catch (error) {
       console.error("Failed to fetch workouts:", error.message);
     } finally {
@@ -35,11 +34,10 @@ function GetWorkout() {
     }
   }
 
-  // Open Edit Modal and set current workout
   function openEditModal(workout) {
     setCurrentWorkout(workout);
     setUpdatedWorkoutData({
-      exercise_id: workout.exercise_id || "", // Ensure default values to avoid undefined
+      exercise_id: workout.exercise_id || "",
       sets: workout.sets || "",
       reps: workout.reps || "",
       weight: workout.weight || "",
@@ -47,13 +45,11 @@ function GetWorkout() {
     setShowEditModal(true);
   }
 
-  // Close Edit Modal
   function closeEditModal() {
     setShowEditModal(false);
     setCurrentWorkout(null);
   }
 
-  // Handle form input changes
   function handleInputChange(e) {
     const { name, value } = e.target;
     setUpdatedWorkoutData((prevData) => ({
@@ -62,7 +58,6 @@ function GetWorkout() {
     }));
   }
 
-  // Edit a workout
   async function saveWorkoutChanges() {
     try {
       setIsLoading(true);
@@ -79,7 +74,7 @@ function GetWorkout() {
   
       if (response.status === 200) {
         console.log("Workout edited successfully");
-        await getWorkouts(); // Refresh the workouts list
+        await getWorkouts();
         closeEditModal();
       } else {
         console.error("Failed to edit workout: ", response.data);
@@ -90,9 +85,7 @@ function GetWorkout() {
       setIsLoading(false);
     }
   }
-  
 
-  // Delete a workout
   async function deleteWorkout(log_id) {
     try {
       setIsLoading(true);
@@ -105,7 +98,7 @@ function GetWorkout() {
   
       if (response.status === 200) {
         console.log("Workout deleted successfully");
-        await getWorkouts(); // Refresh the workouts list
+        await getWorkouts();
       } else {
         console.error("Failed to delete workout");
       }
@@ -115,7 +108,6 @@ function GetWorkout() {
       setIsLoading(false);
     }
   }
-  
 
   useEffect(() => {
     getWorkouts();
@@ -123,8 +115,57 @@ function GetWorkout() {
 
   return (
     <div>
-      <main className="p-4 ml-64 transition-margin-left duration-300 ease-in-out"></main>
-      <SideNav />
+      {/* Render the Edit Modal styled like the cards */}
+      {showEditModal && (
+        <div className="card">
+          <div className="card-content">
+            <h2 className="card-title">Edit Workout</h2>
+            <form onSubmit={saveWorkoutChanges}>
+              <input
+                type="text"
+                name="exercise_id"
+                value={updatedWorkoutData.exercise_id}
+                onChange={handleInputChange}
+                placeholder="Exercise ID"
+                className="input-field"
+              />
+              <input
+                type="number"
+                name="sets"
+                value={updatedWorkoutData.sets}
+                onChange={handleInputChange}
+                placeholder="Sets"
+                className="input-field"
+              />
+              <input
+                type="number"
+                name="reps"
+                value={updatedWorkoutData.reps}
+                onChange={handleInputChange}
+                placeholder="Reps"
+                className="input-field"
+              />
+              <input
+                type="number"
+                name="weight"
+                value={updatedWorkoutData.weight}
+                onChange={handleInputChange}
+                placeholder="Weight (kg)"
+                className="input-field"
+              />
+              <div className="modal-buttons">
+                <button type="button" onClick={saveWorkoutChanges} className="edit-button">
+                  Save Changes
+                </button>
+                <button type="button" onClick={closeEditModal} className="delete-button">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {isLoading ? (
         <p>Loading workouts...</p>
       ) : (
@@ -139,7 +180,7 @@ function GetWorkout() {
                 <button
                   type="button"
                   className="edit-button"
-                  onClick={() => openEditModal(workout)} // Open modal with current workout
+                  onClick={() => openEditModal(workout)}
                 >
                   Edit
                 </button>
@@ -153,56 +194,6 @@ function GetWorkout() {
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      {/* Edit Workout Modal */}
-      {showEditModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Edit Workout</h3>
-            <form>
-              <label htmlFor="exercise_id">Exercise ID:</label>
-              <input
-                type="text"
-                id="exercise_id"
-                name="exercise_id"
-                value={updatedWorkoutData.exercise_id}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="sets">Sets:</label>
-              <input
-                type="number"
-                id="sets"
-                name="sets"
-                value={updatedWorkoutData.sets}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="reps">Reps:</label>
-              <input
-                type="number"
-                id="reps"
-                name="reps"
-                value={updatedWorkoutData.reps}
-                onChange={handleInputChange}
-              />
-              <label htmlFor="weight">Weight (kg):</label>
-              <input
-                type="number"
-                id="weight"
-                name="weight"
-                step="0.01"
-                value={updatedWorkoutData.weight}
-                onChange={handleInputChange}
-              />
-              <button type="button" onClick={saveWorkoutChanges}>
-                Save Changes
-              </button>
-              <button type="button" onClick={closeEditModal}>
-                Cancel
-              </button>
-            </form>
-          </div>
         </div>
       )}
     </div>

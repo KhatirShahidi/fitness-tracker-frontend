@@ -5,6 +5,8 @@ import GetWorkout from "./GetWorkout";
 import SideNav from "../components/sideBar";
 import { getApiWithToken } from "../utils/api";
 import Cookies from "js-cookie";
+import { postApi } from "../utils/api";
+import { postApiWithToken } from "../utils/api";
 
 
 function Dashboard() {
