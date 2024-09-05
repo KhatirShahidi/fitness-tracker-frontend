@@ -1,5 +1,5 @@
 import React from 'react';
-import SideNav from './components/sideBar.jsx;'
+import SideNav from './components/sideBar.jsx';
 import { Outlet } from 'react-router-dom'; // Outlet to render child routes
 
 function Layout() {
