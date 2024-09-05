@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import SideNav from "../components/sideBar";
 
 function Exercises() {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +50,6 @@ function Exercises() {
 
   return (
     <div>
-      <SideNav />
       <h1>Exercises</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
