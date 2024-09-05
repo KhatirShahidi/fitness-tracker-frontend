@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Cookies from "js-cookie";
-import { getApiWithToken, putApiWithToken, deleteApiWithToken } from "../utils/api";
-import SideNav from "../components/sideBar";
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import {
+  getApiWithToken,
+  putApiWithToken,
+  deleteApiWithToken,
+} from '../utils/api';
 
 function GetWorkout() {
   const [isLoading, setIsLoading] = useState(true);
@@ -9,26 +12,25 @@ function GetWorkout() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentWorkout, setCurrentWorkout] = useState(null);
   const [updatedWorkoutData, setUpdatedWorkoutData] = useState({
-    exercise_id: "",
-    sets: "",
-    reps: "",
-    weight: "",
+    sets: '',
+    reps: '',
+    weight: '',
   });
 
   async function getWorkouts() {
     try {
       setIsLoading(true);
-      const token = Cookies.get("authToken");
+      const token = Cookies.get('authToken');
       if (!token) {
-        throw new Error("Token not found");
+        throw new Error('Token not found');
       }
 
-      const { data } = await getApiWithToken("http://localhost:5000/workouts", token);
-      console.log("Fetched Workouts:", data);
+      const { data } = await getApiWithToken('workouts', token);
+      console.log('Fetched Workouts:', data);
 
       setWorkouts(data.workouts);
     } catch (error) {
-      console.error("Failed to fetch workouts:", error.message);
+      console.error('Failed to fetch workouts:', error.message);
     } finally {
       setIsLoading(false);
     }
@@ -37,10 +39,9 @@ function GetWorkout() {
   function openEditModal(workout) {
     setCurrentWorkout(workout);
     setUpdatedWorkoutData({
-      exercise_id: workout.exercise_id || "",
-      sets: workout.sets || "",
-      reps: workout.reps || "",
-      weight: workout.weight || "",
+      sets: workout.sets || '',
+      reps: workout.reps || '',
+      weight: workout.weight || '',
     });
     setShowEditModal(true);
   }
@@ -61,26 +62,26 @@ function GetWorkout() {
   async function saveWorkoutChanges() {
     try {
       setIsLoading(true);
-      const token = Cookies.get("authToken");
+      const token = Cookies.get('authToken');
       if (!token) {
-        throw new Error("Token not found");
+        throw new Error('Token not found');
       }
-  
+
       const response = await putApiWithToken(
-        `http://localhost:5000/workouts/${currentWorkout.log_id}`,
+        `workouts/${currentWorkout.log_id}`,
         updatedWorkoutData,
-        token
+        token,
       );
-  
+
       if (response.status === 200) {
-        console.log("Workout edited successfully");
+        console.log('Workout edited successfully');
         await getWorkouts();
         closeEditModal();
       } else {
-        console.error("Failed to edit workout: ", response.data);
+        console.error('Failed to edit workout: ', response.data);
       }
     } catch (error) {
-      console.error("Error editing workout:", error);
+      console.error('Error editing workout:', error);
     } finally {
       setIsLoading(false);
     }
@@ -89,21 +90,21 @@ function GetWorkout() {
   async function deleteWorkout(log_id) {
     try {
       setIsLoading(true);
-      const token = Cookies.get("authToken");
+      const token = Cookies.get('authToken');
       if (!token) {
-        throw new Error("Token not found");
+        throw new Error('Token not found');
       }
-  
-      const response = await deleteApiWithToken(`http://localhost:5000/workouts/${log_id}`, token);
-  
+
+      const response = await deleteApiWithToken(`workouts/${log_id}`, token);
+
       if (response.status === 200) {
-        console.log("Workout deleted successfully");
+        console.log('Workout deleted successfully');
         await getWorkouts();
       } else {
-        console.error("Failed to delete workout");
+        console.error('Failed to delete workout');
       }
     } catch (error) {
-      console.error("Error deleting workout:", error.message);
+      console.error('Error deleting workout:', error.message);
     } finally {
       setIsLoading(false);
     }
@@ -115,20 +116,16 @@ function GetWorkout() {
 
   return (
     <div>
-      {/* Render the Edit Modal styled like the cards */}
       {showEditModal && (
         <div className="card">
           <div className="card-content">
             <h2 className="card-title">Edit Workout</h2>
-            <form onSubmit={saveWorkoutChanges}>
-              <input
-                type="text"
-                name="exercise_id"
-                value={updatedWorkoutData.exercise_id}
-                onChange={handleInputChange}
-                placeholder="Exercise ID"
-                className="input-field"
-              />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                saveWorkoutChanges();
+              }}
+            >
               <input
                 type="number"
                 name="sets"
@@ -154,10 +151,18 @@ function GetWorkout() {
                 className="input-field"
               />
               <div className="modal-buttons">
-                <button type="button" onClick={saveWorkoutChanges} className="edit-button">
+                <button
+                  type="button"
+                  onClick={saveWorkoutChanges}
+                  className="edit-button"
+                >
                   Save Changes
                 </button>
-                <button type="button" onClick={closeEditModal} className="delete-button">
+                <button
+                  type="button"
+                  onClick={closeEditModal}
+                  className="delete-button"
+                >
                   Cancel
                 </button>
               </div>
@@ -173,7 +178,9 @@ function GetWorkout() {
           {workouts.map((workout) => (
             <div key={workout.log_id} className="card">
               <div className="card-content">
-                <h5 className="card-title">Exercise: {workout.exercise_name}</h5>
+                <h5 className="card-title">
+                  Exercise: {workout.exercise_name}
+                </h5>
                 <p className="card-text">Sets: {workout.sets}</p>
                 <p className="card-text">Reps: {workout.reps}</p>
                 <p className="card-text">Weight: {workout.weight} kg</p>

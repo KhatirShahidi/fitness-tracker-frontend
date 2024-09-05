@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { postApi } from "../utils/api";
-import Cookies from "js-cookie";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { postApi } from '../utils/api';
+import Cookies from 'js-cookie';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Login() {
   const {
@@ -15,30 +15,35 @@ function Login() {
   const navigate = useNavigate();
 
   function navigateToDashboard() {
-    navigate("/dashboard");
+    navigate('/dashboard');
   }
 
   async function loginApi(data) {
     try {
-      const res = await postApi("http://localhost:5000/login", data);
-      
-      if (res.status !== 200) {  // Checking the status from Axios response
+      // Use the new API URL with endpoint
+      const res = await postApi('login', data);
+
+      if (res.status !== 200) {
+        // Checking the status from Axios response
         throw new Error(res.statusText);
       }
-      
-      const resData = res.data;  // Axios already parses JSON
+
+      const resData = res.data; // Axios already parses JSON
       const token = resData.data.token;
       console.log(resData);
 
-      alert("Login Successful");
-      
+      alert('Login Successful');
+
       // Save token in cookie
-      Cookies.set("authToken", token);
+      Cookies.set('authToken', token);
       navigateToDashboard();
       reset();
     } catch (error) {
-      console.error("Login Error:", error.response ? error.response.data : error.message);
-      alert("Login Failed. Please check your credentials.");
+      console.error(
+        'Login Error:',
+        error.response ? error.response.data : error.message,
+      );
+      alert('Login Failed. Please check your credentials.');
     }
   }
 
@@ -53,7 +58,7 @@ function Login() {
         <div>
           <label>Email: </label>
           <input
-            {...register("email", { required: "Enter email" })}
+            {...register('email', { required: 'Enter email' })}
             type="email"
             required
           />
@@ -62,7 +67,7 @@ function Login() {
         <div>
           <label>Password: </label>
           <input
-            {...register("password", { required: "Enter password" })}
+            {...register('password', { required: 'Enter password' })}
             type="password"
             required
           />
@@ -70,8 +75,8 @@ function Login() {
         </div>
         <button type="submit">Login</button>
         <p>
-          Don't have an account? Click{" "}
-          <Link to="/register">here</Link> to Register
+          Don't have an account? Click <Link to="/register">here</Link> to
+          Register
         </p>
       </form>
     </div>

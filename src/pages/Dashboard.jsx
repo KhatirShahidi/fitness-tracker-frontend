@@ -1,39 +1,36 @@
-import React, { useEffect, useState } from "react";
-import CreateExercise from "./CreateExercise";
-import CreateWorkout from "./CreateWorkout";
-import GetWorkout from "./GetWorkout";
-import SideNav from "../components/sideBar";
-import { getApiWithToken } from "../utils/api";
-import Cookies from "js-cookie";
-import { postApi } from "../utils/api";
-import { postApiWithToken } from "../utils/api";
-
+import React, { useEffect, useState } from 'react';
+import CreateExercise from './CreateExercise';
+import CreateWorkout from './CreateWorkout';
+import GetWorkout from './GetWorkout';
+import SideNav from '../components/sideBar';
+import { getApiWithToken } from '../utils/api';
+import Cookies from 'js-cookie';
 
 function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
-  const [username, setUsername] = useState(""); // State to store the username
+  const [username, setUsername] = useState(''); // State to store the username
 
-    useEffect(() => {
+  useEffect(() => {
     async function getUser() {
-    try {
-      const token = Cookies.get("authToken");
-      if (!token) {
-        throw new Error("Token not found");
+      try {
+        const token = Cookies.get('authToken');
+        if (!token) {
+          throw new Error('Token not found');
+        }
+
+        // Use the new API URL with endpoint
+        const { data } = await getApiWithToken('me', token);
+
+        setUsername(data.user.username);
+      } catch (error) {
+        console.error('Failed to fetch user:', error.message);
+      } finally {
+        setIsLoading(false);
       }
-
-      const { data } = await getApiWithToken("http://localhost:5000/me", token);
-
-      setUsername(data.user.username);
-    } catch (error) {
-      console.error("Failed to fetch user:", error.message);
-    } finally {
-      setIsLoading(false);
     }
-  }
 
-  getUser();
-}, []);
-  
+    getUser();
+  }, []);
 
   return (
     <div className="flex">
@@ -55,6 +52,5 @@ function Dashboard() {
     </div>
   );
 }
-
 
 export default Dashboard;
