@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import CreateExercise from './CreateExercise';
 import CreateWorkout from './CreateWorkout';
 import GetWorkout from './GetWorkout';
-import SideNav from '../components/sideBar.jsx';
 import { getApiWithToken } from '../utils/api';
 import Cookies from 'js-cookie';
 
@@ -34,7 +33,6 @@ function Dashboard() {
 
   return (
     <div className="flex">
-      <SideNav />
       <div className="dashboard-container">
         <h1 className="text-2xl font-bold">
           Welcome {username}, to My Fitness Tracker
