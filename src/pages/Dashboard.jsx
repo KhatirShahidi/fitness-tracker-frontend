@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CreateExercise from './CreateExercise';
 import CreateWorkout from './CreateWorkout';
 import GetWorkout from './GetWorkout';
-import SideNav from '../components/sideBar';
+import SideNav from '../components/sideBar.jsx';
 import { getApiWithToken } from '../utils/api';
 import Cookies from 'js-cookie';
 
