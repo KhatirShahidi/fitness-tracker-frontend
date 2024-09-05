@@ -8,7 +8,8 @@ import Exercises from "../pages/Exercises";
 import CreateWorkout from "../pages/CreateWorkout";
 import CreateExercise from "../pages/CreateExercise";
 import GetWorkout from "../pages/GetWorkout";
-import Layout from "../components/Layout"; // Import the new Layout component
+import Layout from "../pages/Layout";
+import SideNav from "../pages/sideBar";
 
 function AppRoutes() {
   return (
@@ -28,6 +29,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path ="/sideNav" element={<SideNav />} />
         
         {/* Catch-all route */}
         <Route path="*" element={<h1>404: Page Not Found</h1>} />
