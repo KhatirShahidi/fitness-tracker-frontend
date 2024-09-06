@@ -35,7 +35,7 @@ function Dashboard() {
     <div className="flex">
       <div className="dashboard-container">
         <h1 className="text-2xl font-bold">
-          Welcome {username}, to My Fitness Tracker
+          Welcome {username}, to My Fitness Tracker!
           <br />
         </h1>
         <h2>Step 1: </h2>

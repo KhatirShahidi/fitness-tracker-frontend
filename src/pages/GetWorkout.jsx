@@ -115,7 +115,8 @@ function GetWorkout() {
   }, []);
 
   return (
-    <div>
+    <div className="get-workout">
+      <h2> Your Workouts</h2>
       {showEditModal && (
         <div className="card">
           <div className="card-content">
