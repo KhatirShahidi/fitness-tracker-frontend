@@ -610,6 +610,13 @@ button[type="submit"]:disabled {
     margin-left: 0; /* Reset margin for small screens */
   }
 
+  .main-content {
+    margin-left: 3.5rem; /* Adjust to sidebar width */
+    flex-grow: 1; /* Allow the content to fill the remaining space */
+    padding: 1rem; /* Maintain padding */
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+  }
+
   #default-sidebar {
     width: 3.5rem; /* Narrow the sidebar for smaller screens */
     transform: translateX(0);
