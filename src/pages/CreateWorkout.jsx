@@ -22,6 +22,7 @@ const CreateWorkout = () => {
 
     // Fetch exercises data from backend API
     fetchExercises();
+    
   }, []);
 
   const fetchExercises = async () => {
@@ -102,6 +103,7 @@ const CreateWorkout = () => {
 
       setMessage('Workout added successfully!');
       resetForm();
+      window.location.reload();
     } catch (error) {
       console.error('Error adding workout log:', error);
       console.error('Error Response Data:', error.response?.data);
