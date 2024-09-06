@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   FaHome,
   FaDumbbell,
@@ -6,36 +6,36 @@ import {
   FaPlusCircle,
   FaList,
   FaSignOutAlt,
-} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+} from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 function SideNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   function navigateToLogin() {
-    navigate("/login");
+    navigate('/login');
   }
 
   function navigateToExercises() {
-    navigate("/exercises");
+    navigate('/exercises');
   }
 
   function navigateToWorkouts() {
-    navigate("/workouts");
+    navigate('/workouts');
   }
 
   function navigateToDashboard() {
-    navigate("/dashboard");
+    navigate('/dashboard');
   }
 
   function navigateToAddExercises() {
-    navigate("/createexercise");
+    navigate('/createexercise');
   }
 
   function navigateToAddWorkout() {
-    navigate("/createworkout");
+    navigate('/createworkout');
   }
 
   const toggleSidebar = () => {
@@ -52,8 +52,8 @@ function SideNav() {
       <div
         id="default-sidebar"
         className={`${
-          isOpen ? "w-64" : "w-16"
-        } h-screen bg-gray-200 transition-width duration-300 ease-in-out flex-shrink-0`} 
+          isOpen ? 'w-64' : 'w-16'
+        } h-screen bg-gray-200 transition-width duration-300 ease-in-out flex-shrink-0`}
       >
         {/* Sidebar content */}
         <ul>
@@ -158,7 +158,7 @@ function SideNav() {
           </li>
         </ul>
       </div>
-      
+
       {/* Main Content */}
     </div>
   );

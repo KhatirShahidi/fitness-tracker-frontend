@@ -37,8 +37,6 @@ function Dashboard() {
         <h1 className="text-2xl font-bold">
           Welcome {username}, to My Fitness Tracker
           <br />
-          <br />
-          Please follow the steps below to get started:
         </h1>
         <h2>Step 1: </h2>
         <CreateExercise />

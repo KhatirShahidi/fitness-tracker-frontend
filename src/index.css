@@ -552,15 +552,22 @@ button[type="submit"]:disabled {
   }
 
   #default-sidebar {
-    transform: translateX(-100%);
+    width: 3.5rem; /* Narrow the sidebar for smaller screens */
+    transform: translateX(0);
+  }
+
+  #default-sidebar ul {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0; /* Adjust padding */
+  }
+
+  #default-sidebar ul li a span {
+    display: none; /* Hide text to make the sidebar narrower */
   }
 
   .sidebar-open #default-sidebar {
     transform: translateX(0);
-  }
-
-  #default-sidebar {
-    transform: translateX(-100%);
   }
 
   .sidebar-open #default-sidebar {
